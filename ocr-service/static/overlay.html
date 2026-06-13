@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Stream Overlay</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: transparent;
+            color: #fff;
+        }
+
+        /* Shared panel styles */
+        .panel {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 10px 14px;
+            min-width: 140px;
+        }
+
+        .panel.hidden {
+            display: none;
+        }
+
+        /* Nightlord panel - top right (gold border) */
+        .nightlord-panel {
+            top: 20px;
+            right: 20px;
+            border-left: 3px solid #ffd700;
+        }
+
+        /* Field boss panel - top left (cyan border) */
+        .field-boss-panel {
+            top: 20px;
+            left: 20px;
+            border-left: 3px solid #00d4ff;
+        }
+
+        /* Field boss error panel - top left (red border) */
+        .field-boss-error-panel {
+            top: 20px;
+            left: 20px;
+            border-left: 3px solid #ef4444;
+            min-width: 60px;
+            padding: 12px 16px;
+        }
+
+        .error-x {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ef4444;
+            text-align: center;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .boss-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #333;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            padding: 2px 0;
+        }
+
+        .label {
+            color: #999;
+            margin-right: 12px;
+        }
+
+        .value {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .weak { color: #4ade80; }
+        .resist { color: #f87171; }
+
+        .section {
+            margin-bottom: 6px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .hidden { display: none; }
+
+        .columns {
+            display: flex;
+            gap: 16px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .none-text {
+            color: #666;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .status-section {
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid #333;
+        }
+
+        .status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .status-row {
+            font-size: 12px;
+        }
+
+        .status-row .status-class {
+            font-weight: bold;
+        }
+
+        .status-weak .status-class { color: #4ade80; }
+        .status-strong .status-class { color: #f87171; }
+        .status-immune .status-class { color: #fca5a5; }
+
+        /* Status type label colors */
+        .status-poison { color: #4ade80; }
+        .status-scarlet_rot { color: #f97316; }
+        .status-blood_loss { color: #ef4444; }
+        .status-frostbite { color: #e2e8f0; }
+        .status-sleep { color: #a855f7; }
+        .status-madness { color: #facc15; }
+
+        /* Damage type colors */
+        .fire { color: #ff6b35; }
+        .lightning { color: #fbbf24; }
+        .magic { color: #60a5fa; }
+        .holy { color: #fef08a; }
+    </style>
+</head>
+<body>
+    <!-- Field Boss Error Panel - Top Left -->
+    <div id="fieldBossErrorPanel" class="panel field-boss-error-panel hidden">
+        <div class="error-x">✕</div>
+    </div>
+
+    <!-- Field Boss Panel - Top Left -->
+    <div id="fieldBossPanel" class="panel field-boss-panel hidden">
+        <div class="panel-title">Field Boss</div>
+        <div class="boss-name" id="fieldBossName"></div>
+        <div id="fieldBossNone" class="none-text hidden">(None)</div>
+        <div id="fieldBossColumns" class="columns">
+            <div id="fieldWeakSection" class="section column">
+                <div class="section-title">Weaknesses</div>
+                <div id="fieldWeakList"></div>
+            </div>
+            <div id="fieldResistSection" class="section column">
+                <div class="section-title">Strengths</div>
+                <div id="fieldResistList"></div>
+            </div>
+        </div>
+        <div id="fieldBossStatusSection" class="status-section hidden">
+            <div id="fieldBossStatusList" class="status-list"></div>
+        </div>
+    </div>
+
+    <!-- Nightlord Panel - Top Right -->
+    <div id="nightlordPanel" class="panel nightlord-panel hidden">
+        <div class="panel-title">Nightlord</div>
+        <div id="nightlordNone" class="none-text hidden">(None)</div>
+        <div id="nightlordColumns" class="columns">
+            <div id="weakSection" class="section column">
+                <div class="section-title">Weaknesses</div>
+                <div id="weakList"></div>
+            </div>
+            <div id="resistSection" class="section column">
+                <div class="section-title">Strengths</div>
+                <div id="resistList"></div>
+            </div>
+        </div>
+        <div id="nightlordStatusSection" class="status-section hidden">
+            <div id="nightlordStatusList" class="status-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Boss data loaded from /api/bosses
+        let NIGHTLORD_DATA = {};
+        let BOSS_DATA = null;
+
+        // Load boss data from API
+        async function loadBossData() {
+            try {
+                const response = await fetch('/api/bosses');
+                BOSS_DATA = await response.json();
+
+                // Build NIGHTLORD_DATA from the loaded data
+                for (const [id, data] of Object.entries(BOSS_DATA.nightlords || {})) {
+                    NIGHTLORD_DATA[id] = { negations: data.negations };
+                }
+                console.log('Boss data loaded:', Object.keys(NIGHTLORD_DATA).length, 'nightlords');
+            } catch (e) {
+                console.error('Failed to load boss data:', e);
+            }
+        }
+
+        const LABELS = {
+            standard: "Std", slash: "Sla", strike: "Str", pierce: "Prc",
+            magic: "Mag", fire: "Fire", lightning: "Ltng", holy: "Holy"
+        };
+
+        const CLASSES = {
+            fire: "fire", lightning: "lightning", magic: "magic", holy: "holy"
+        };
+
+        const STATUS_LABELS = {
+            poison: "Poison",
+            scarlet_rot: "Rot",
+            blood_loss: "Blood",
+            frostbite: "Frost",
+            sleep: "Sleep",
+            madness: "Madn."
+        };
+
+        // Classify status resistance: 'weak', 'strong', 'immune', or null (default/don't show)
+        function classifyStatusResistance(value) {
+            if (value === "immune") return "immune";
+            if (!Array.isArray(value) || value.length === 0) return null;
+
+            const firstVal = value[0];
+
+            // If first value < 154, it's weak (easier to proc)
+            if (firstVal < 154) return "weak";
+
+            // Default is [154, 252, 542, 999] - 4 elements starting at 154
+            // If exactly 4 elements and starts at 154, it's default
+            if (value.length === 4 && firstVal === 154) return null;
+
+            // Fewer than 4 elements with first > 154 means strong (harder to proc)
+            if (value.length < 4 && firstVal > 154) return "strong";
+
+            // More than 4 elements means weak (more proc opportunities)
+            if (value.length > 4) return "weak";
+
+            return null;
+        }
+
+        function renderStatusSection(statusResistances, sectionId, listId) {
+            const section = document.getElementById(sectionId);
+            const list = document.getElementById(listId);
+
+            if (!statusResistances || Object.keys(statusResistances).length === 0) {
+                section?.classList.add('hidden');
+                return;
+            }
+
+            // Group by classification
+            const groups = { immune: [], strong: [], weak: [] };
+            for (const [status, value] of Object.entries(statusResistances)) {
+                const classification = classifyStatusResistance(value);
+                if (classification) {
+                    groups[classification].push({ status, label: STATUS_LABELS[status] || status });
+                }
+            }
+
+            // Build rows for non-empty groups
+            const rows = [];
+            const order = ['immune', 'strong', 'weak'];
+            const classLabels = { immune: 'IMMUNE', strong: 'STRONG', weak: 'WEAK' };
+
+            for (const cls of order) {
+                if (groups[cls].length > 0) {
+                    const statusList = groups[cls].map(s =>
+                        `<span class="status-${s.status}">${s.label}</span>`
+                    ).join(', ');
+                    rows.push(`<div class="status-row status-${cls}"><span class="status-class">${classLabels[cls]}:</span> ${statusList}</div>`);
+                }
+            }
+
+            if (rows.length === 0) {
+                section?.classList.add('hidden');
+                return;
+            }
+
+            section?.classList.remove('hidden');
+            list.innerHTML = rows.join('');
+        }
+
+        let currentNightlord = null;
+        let currentFieldBoss = null;
+        let ws = null;
+        let isVisible = true;
+        let isPaused = false;
+        let fieldBossErrorTimeout = null;
+
+        function setOverlayVisible(visible) {
+            isVisible = visible;
+            document.body.style.opacity = visible ? '1' : '0';
+        }
+
+        function resetOverlay() {
+            isPaused = false;
+            currentNightlord = null;
+            currentFieldBoss = null;
+            document.getElementById('nightlordPanel').classList.add('hidden');
+            document.getElementById('fieldBossPanel').classList.add('hidden');
+            hideFieldBossError();
+        }
+
+        function renderWeaknessPanel(negations, weakListId, weakSectionId, resistListId, resistSectionId) {
+            const weaknesses = [];
+            const resistances = [];
+
+            for (const [type, val] of Object.entries(negations)) {
+                if (val < 0) weaknesses.push({ type, val });
+                else if (val > 0) resistances.push({ type, val });
+            }
+
+            weaknesses.sort((a, b) => a.val - b.val);
+            resistances.sort((a, b) => b.val - a.val);
+
+            // Handle "(None)" display for both panels
+            const isFieldBoss = weakSectionId === 'fieldWeakSection';
+            const noneId = isFieldBoss ? 'fieldBossNone' : 'nightlordNone';
+            const columnsId = isFieldBoss ? 'fieldBossColumns' : 'nightlordColumns';
+            const noneEl = document.getElementById(noneId);
+            const columnsEl = document.getElementById(columnsId);
+
+            if (weaknesses.length === 0 && resistances.length === 0) {
+                noneEl?.classList.remove('hidden');
+                columnsEl?.classList.add('hidden');
+            } else {
+                noneEl?.classList.add('hidden');
+                columnsEl?.classList.remove('hidden');
+            }
+
+            const weakEl = document.getElementById(weakListId);
+            const weakSection = document.getElementById(weakSectionId);
+            if (weaknesses.length === 0) {
+                weakSection.classList.add('hidden');
+            } else {
+                weakSection.classList.remove('hidden');
+                // Show ALL weaknesses, not just top 4
+                weakEl.innerHTML = weaknesses.map(w => `
+                    <div class="row">
+                        <span class="label ${CLASSES[w.type] || ''}">${LABELS[w.type]}</span>
+                        <span class="value weak">${w.val}</span>
+                    </div>
+                `).join('');
+            }
+
+            const resistEl = document.getElementById(resistListId);
+            const resistSection = document.getElementById(resistSectionId);
+            if (resistances.length === 0) {
+                resistSection.classList.add('hidden');
+            } else {
+                resistSection.classList.remove('hidden');
+                // Show ALL resistances, not just top 3
+                resistEl.innerHTML = resistances.map(r => `
+                    <div class="row">
+                        <span class="label ${CLASSES[r.type] || ''}">${LABELS[r.type]}</span>
+                        <span class="value resist">+${r.val}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderNightlord(bossId) {
+            if (isPaused) return;
+            const boss = NIGHTLORD_DATA[bossId];
+            const panel = document.getElementById('nightlordPanel');
+
+            if (!boss) {
+                panel.classList.add('hidden');
+                currentNightlord = null;
+                return;
+            }
+
+            panel.classList.remove('hidden');
+            renderWeaknessPanel(boss.negations, 'weakList', 'weakSection', 'resistList', 'resistSection');
+
+            // Render status resistances from BOSS_DATA
+            const fullData = BOSS_DATA?.nightlords?.[bossId];
+            renderStatusSection(fullData?.status_resistances, 'nightlordStatusSection', 'nightlordStatusList');
+        }
+
+        function renderFieldBoss(bossName, negations) {
+            if (isPaused) return;
+            const panel = document.getElementById('fieldBossPanel');
+
+            if (!bossName || !negations) {
+                panel.classList.add('hidden');
+                currentFieldBoss = null;
+                return;
+            }
+
+            // Hide error panel if showing
+            hideFieldBossError();
+
+            panel.classList.remove('hidden');
+            document.getElementById('fieldBossName').textContent = bossName;
+            renderWeaknessPanel(negations, 'fieldWeakList', 'fieldWeakSection', 'fieldResistList', 'fieldResistSection');
+
+            // Render status resistances from BOSS_DATA (look up by name)
+            const fullData = BOSS_DATA?.field_bosses?.[bossName];
+            renderStatusSection(fullData?.status_resistances, 'fieldBossStatusSection', 'fieldBossStatusList');
+        }
+
+        function hideFieldBoss() {
+            document.getElementById('fieldBossPanel').classList.add('hidden');
+            currentFieldBoss = null;
+        }
+
+        function showFieldBossError() {
+            // Clear any existing timeout
+            if (fieldBossErrorTimeout) {
+                clearTimeout(fieldBossErrorTimeout);
+            }
+
+            // Hide the normal field boss panel if showing
+            document.getElementById('fieldBossPanel').classList.add('hidden');
+
+            // Show the error panel
+            document.getElementById('fieldBossErrorPanel').classList.remove('hidden');
+
+            // Auto-hide after 3 seconds
+            fieldBossErrorTimeout = setTimeout(() => {
+                document.getElementById('fieldBossErrorPanel').classList.add('hidden');
+                fieldBossErrorTimeout = null;
+            }, 3000);
+        }
+
+        function hideFieldBossError() {
+            if (fieldBossErrorTimeout) {
+                clearTimeout(fieldBossErrorTimeout);
+                fieldBossErrorTimeout = null;
+            }
+            document.getElementById('fieldBossErrorPanel').classList.add('hidden');
+        }
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/overlay`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('WebSocket connected to', wsUrl);
+            };
+
+            ws.onmessage = (event) => {
+                console.log('WebSocket received:', event.data);
+                try {
+                    const data = JSON.parse(event.data);
+                    console.log('Parsed data:', data.type, data.command);
+
+                    if (data.type === 'command') {
+                        switch (data.command) {
+                            case 'hide':
+                                setOverlayVisible(false);
+                                break;
+                            case 'show':
+                                setOverlayVisible(true);
+                                break;
+                            case 'reset':
+                                resetOverlay();
+                                break;
+                            case 'showBoss':
+                                if (data.boss) {
+                                    isPaused = false;
+                                    currentNightlord = data.boss;
+                                    renderNightlord(data.boss);
+                                }
+                                break;
+                            case 'showFieldBoss':
+                                if (data.fieldBoss && data.negations) {
+                                    isPaused = false;
+                                    currentFieldBoss = data.fieldBoss;
+                                    renderFieldBoss(data.fieldBoss, data.negations);
+                                }
+                                break;
+                            case 'hideFieldBoss':
+                                hideFieldBoss();
+                                break;
+                            case 'fieldBossError':
+                                showFieldBossError();
+                                break;
+                        }
+                    } else if (data.type === 'detection') {
+                        // Nightlord detection from map capture
+                        if (data.nightlord && data.nightlord_confidence > 0.7) {
+                            if (data.nightlord !== currentNightlord) {
+                                currentNightlord = data.nightlord;
+                                renderNightlord(currentNightlord);
+                            }
+                        }
+                    } else if (data.type === 'field_boss') {
+                        // Field boss detection from OCR
+                        if (data.boss_name && data.negations) {
+                            currentFieldBoss = data.boss_name;
+                            renderFieldBoss(data.boss_name, data.negations);
+                        }
+                    }
+                } catch (e) {
+                    console.error('Parse error:', e);
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket closed, reconnecting...');
+                setTimeout(connectWebSocket, 2000);
+            };
+
+            ws.onerror = (err) => {
+                console.error('WebSocket error:', err);
+            };
+        }
+
+        // Initialize: load boss data, then set up everything else
+        async function init() {
+            await loadBossData();
+
+            // URL params for testing
+            const urlParams = new URLSearchParams(window.location.search);
+            const testBoss = urlParams.get('boss');
+            const testFieldBoss = urlParams.get('fieldBoss');
+            const testFieldBossError = urlParams.get('fieldBossError');
+
+            if (testBoss) {
+                renderNightlord(testBoss);
+            }
+            if (testFieldBoss) {
+                // For testing, use placeholder negations with both weaknesses and resistances
+                renderFieldBoss(testFieldBoss, { standard: 0, slash: 0, strike: -15, pierce: 0, magic: 30, fire: -10, lightning: -20, holy: 25 });
+            }
+            if (testFieldBossError) {
+                showFieldBossError();
+            }
+
+            // Always connect WebSocket so overlay-command works
+            connectWebSocket();
+        }
+
+        init();
+    </script>
+</body>
+</html>

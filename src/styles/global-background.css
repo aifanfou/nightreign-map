@@ -1,0 +1,86 @@
+.global-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+}
+
+.global-background-black {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #000000;
+  z-index: -10;
+}
+
+
+.global-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 1;
+  mask: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0.7) 90%, rgba(0,0,0,0) 100%);
+  -webkit-mask: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 80%, rgba(0,0,0,0.7) 90%, rgba(0,0,0,0) 100%);
+}
+
+
+.global-background-image img,
+.global-background-image > div {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: var(--image-bg-filter, hue-rotate(0deg) saturate(150%) brightness(20%));
+}
+
+
+@keyframes darkShift {
+  0% {
+    background: linear-gradient(
+      180deg,
+      #1a1a1a 0%,
+      #2d2d2d 25%,
+      #1f1f1f 50%,
+      #141414 75%,
+      #0a0a0a 100%
+    );
+  }
+  100% {
+    background: linear-gradient(
+      180deg,
+      #2d2d2d 0%,
+      #1a1a1a 25%,
+      #141414 50%,
+      #1f1f1f 75%,
+      #000000 100%
+    );
+  }
+}
+
+@media (max-height: 800px) {
+  .global-background {
+    height: 1000px;
+  }
+}
+
+@media (min-height: 950px) {
+  .global-background {
+    height: 1600px;
+  }
+}
+
+@media (min-height: 1600px) {
+  .global-background {
+    height: 2000px;
+  }
+}
