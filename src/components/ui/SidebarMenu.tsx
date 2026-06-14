@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 interface SidebarMenuProps {
   isOpen: boolean
@@ -56,95 +55,6 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({ isOpen, onClose }) => 
           </div>
 
           <nav className={`space-y-4 transition-all duration-300 ${isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
-            <Link
-              href="/updates"
-              prefetch={false}
-              onClick={onClose}
-              className="block w-full p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-blue-400 transition-all duration-200 text-left"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-blue-400 transition-colors duration-200">更新日志</h3>
-              <p className="text-sm text-gray-400 mt-1">浏览版本发布说明和新功能</p>
-            </Link>
-
-            <Link
-              href="/faq"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">FAQ</h3>
-              <p className="text-sm text-gray-400 mt-1">常见问题解答</p>
-            </Link>
-
-            <Link
-              href="/contact"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">联系作者</h3>
-              <p className="text-sm text-gray-400 mt-1">如何联系作者</p>
-            </Link>
-
-            <Link
-              href="/about"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">关于</h3>
-              <p className="text-sm text-gray-400 mt-1">项目背后的故事</p>
-            </Link>
-
-            <Link
-              href="/how-to-use"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">使用指南</h3>
-              <p className="text-sm text-gray-400 mt-1">逐步操作说明</p>
-            </Link>
-
-            <Link
-              href="/privacy-policy"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">隐私政策</h3>
-              <p className="text-sm text-gray-400 mt-1">了解我们如何保护和处理您的数据</p>
-            </Link>
-
-            <Link
-              href="/legal"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">法律声明</h3>
-              <p className="text-sm text-gray-400 mt-1">免责声明、商标和内容移除政策</p>
-            </Link>
-
-            <Link
-              href="/terms"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-gray-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-gray-300 transition-colors duration-200">服务条款</h3>
-              <p className="text-sm text-gray-400 mt-1">服务条款</p>
-            </Link>
-
-            <Link
-              href="/support-the-project"
-              prefetch={false}
-              onClick={onClose}
-              className="block p-4 rounded-lg border border-gray-600/50 bg-gray-700/30 hover:bg-gray-600/50 hover:border-blue-400 transition-all duration-200"
-            >
-              <h3 className="text-lg font-semibold text-white hover:text-blue-400 transition-colors duration-200">支持本项目</h3>
-              <p className="text-sm text-gray-400 mt-1">帮助我们持续运营</p>
-            </Link>
           </nav>
         </div>
       </div>

@@ -39,29 +39,7 @@ export const Footer: React.FC = () => {
           </svg>
           <span className="hidden sm:inline text-sm">报告</span>
         </button>
-        <Link
-          href="/support-the-project"
-          prefetch={false}
-          className="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200"
-        >
-          <Image
-            src={pagesPngUrl('/Images/support/KoFiIcon.png')}
-            alt="Ko-fi"
-            width={18}
-            height={18}
-            className="group-hover:scale-110 transition-transform duration-200"
-            unoptimized
-          />
-          <span className="text-base font-semibold text-white">支持本项目</span>
-          <Image
-            src={pagesPngUrl('/Images/support/KoFiIcon.png')}
-            alt="Ko-fi"
-            width={18}
-            height={18}
-            className="group-hover:scale-110 transition-transform duration-200"
-            unoptimized
-          />
-        </Link>
+        <span className="text-gray-500 text-sm">Seed Finder</span>
         {isBugModalOpen ? (
           <BugReportModal isOpen={isBugModalOpen} onClose={() => setIsBugModalOpen(false)} borderHueRotate={0} />
         ) : null}

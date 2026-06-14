@@ -18,8 +18,7 @@ export default function HomePage() {
           黑夜君临种子查找器是一款帮助玩家简化地图路线规划、优化游戏内路径的工具。
         </p>
         <p className="mt-1 text-gray-300 leading-snug sm:leading-normal">
-          了解使用流程请查看 <Link className="underline" href="/how-to-use" prefetch={false}>使用指南</Link>，常见问题请查看{' '}
-          <Link className="underline" href="/faq" prefetch={false}>FAQ</Link>。
+          选择地图类型开始查找种子。
         </p>
       </header>
 
@@ -40,17 +39,7 @@ export default function HomePage() {
 
       <nav className="flex justify-center px-6 pb-10">
         <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-sm text-gray-300">
-          <Link className="underline" href="/legal" prefetch={false}>
-            法律声明
-          </Link>
-          <span aria-hidden="true">•</span>
-          <Link className="underline" href="/privacy-policy" prefetch={false}>
-            隐私政策
-          </Link>
-          <span aria-hidden="true">•</span>
-          <Link className="underline" href="/terms" prefetch={false}>
-            服务条款
-          </Link>
+          <span>黑夜君临种子查找器</span>
         </div>
       </nav>
     </div>
