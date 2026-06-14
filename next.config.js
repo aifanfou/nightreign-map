@@ -21,7 +21,7 @@ const contentSecurityPolicy = [
 
 const nextConfig = {
   output: 'export',
-  basePath: '/nightreign-seedmap',
+  basePath: '/nightreign-map',
   env: {
     NEXT_PUBLIC_APP_VERSION: packageJson.version,
   },
