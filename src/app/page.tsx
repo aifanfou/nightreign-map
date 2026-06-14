@@ -26,13 +26,8 @@ export default function HomePage() {
         <MapSelectionCards selectedNightlord={selectedNightlord} />
       </section>
 
-      <section className="mx-auto mt-8 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex items-center justify-center">
-          {/* Empty space on the left */}
-        </div>
-        <div className="flex items-center justify-center">
-          <PreNightlordSelector onNightlordChange={setSelectedNightlord} />
-        </div>
+      <section className="mx-auto mt-8 w-full max-w-7xl flex justify-center">
+        <PreNightlordSelector onNightlordChange={setSelectedNightlord} />
       </section>
 
       <div className="h-[32rem]" />
