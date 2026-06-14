@@ -4,8 +4,10 @@ export type SeedImageProvider = {
   sourceLabel: string
 }
 
+const getBasePath = (): string => process.env.NEXT_PUBLIC_PAGES_ASSET_BASE_URL || ''
+
 const baseProvider = {
-  baseUrl: '/Images/pattern/',
+  get baseUrl() { return `${getBasePath()}/Images/pattern/` },
   fileExtension: 'jpg',
   sourceLabel: '本地'
 }

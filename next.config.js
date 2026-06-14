@@ -24,6 +24,7 @@ const nextConfig = {
   basePath: '/nightreign-map',
   env: {
     NEXT_PUBLIC_APP_VERSION: packageJson.version,
+    NEXT_PUBLIC_PAGES_ASSET_BASE_URL: '/nightreign-map',
   },
   images: {
     unoptimized: true,
