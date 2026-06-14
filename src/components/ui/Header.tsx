@@ -1,17 +1,11 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter, usePathname } from 'next/navigation';
-import { HamburgerMenu } from './HamburgerMenu';
-import { SidebarMenu } from './SidebarMenu';
-import { useGlobalUpdateContext } from '@/components/providers/GlobalUpdateProvider';
 import { pagesWebpUrl } from '@/lib/pagesAssets';
 
 export const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
-  const { triggerUpdateModal } = useGlobalUpdateContext()
 
   const isHomepage = pathname === '/';
   
@@ -19,13 +13,7 @@ export const Header: React.FC = () => {
     router.push('/');
   };
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
+  
 
   return (
     <>
@@ -65,28 +53,11 @@ export const Header: React.FC = () => {
             decoding="async"
           />
           
-          {/* Hamburger Menu - positioned on the right */}
-          <button
-            onClick={toggleSidebar}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white p-3 transition-all duration-200 hover:scale-105 z-10 focus:outline-none"
-            title="打开菜单"
-            aria-label={isSidebarOpen ? '关闭菜单' : '打开菜单'}
-            aria-expanded={isSidebarOpen}
-          >
-            <HamburgerMenu
-              isOpen={isSidebarOpen}
-              className=""
-            />
-          </button>
+
         </div>
       </header>
 
-      {/* Sidebar */}
-      <SidebarMenu 
-        isOpen={isSidebarOpen} 
-        onClose={closeSidebar}
-        onTriggerUpdates={triggerUpdateModal}
-      />
+
     </>
   );
 };

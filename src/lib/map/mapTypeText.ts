@@ -44,13 +44,13 @@ const mapTypeTexts: Record<MapTypeKey, MapTypeText> = {
     sourceUrl: 'https://eldenring.fandom.com/wiki/Rotted_Woods',
   },
   noklateo: {
-    title: '诺克拉特奥，覆世之城',
+    title: '隐城',
     paragraphs: [
-      '诺克拉特奥，覆世之城是一座失落的永恒之城，在诺克拉特奥覆世之城地壳变动事件期间出现在 Limveld 的西南象限。此地居住着无头灵庙骑士和被诅咒的猎鹰军团。下水道中潜伏着石化蜥蜴。',
+      '隐城是一座失落的永恒之城，在隐城地壳变动事件期间出现在 Limveld 的西南象限。此地居住着无头灵庙骑士和被诅咒的猎鹰军团。下水道中潜伏着石化蜥蜴。',
       '城中有一口石棺，可进行武器复制。',
       '此事件在击败七位不同的黑夜王后解锁。',
       '可在怀尔德追忆任务的第三章期间提前进入。',
-      '特殊物品：顶部的秘密宝箱 — 诺克拉特奥覆世之城之祝福："不受他人帮助地从濒死中复活一次，并在短时间内变得更加强大"。',
+      '特殊物品：顶部的秘密宝箱 — 隐城之祝福："不受他人帮助地从濒死中复活一次，并在短时间内变得更加强大"。',
     ],
     sourceUrl: 'https://eldenring.fandom.com/wiki/Noklateo,_the_Shrouded_City',
   },

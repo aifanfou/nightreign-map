@@ -88,7 +88,7 @@ export const MapSelectionCards: React.FC<MapSelectionCardsProps> = ({ selectedNi
     <div className="flex flex-col items-center p-2 relative">
       <div className="max-w-6xl w-full relative z-10">
         <div className="text-center mb-1">
-          <h2 className="text-2xl md:text-2xl font-semibold text-white text-outlined seed-finder-glow">Select your map</h2>
+          <h2 className="text-2xl md:text-2xl font-semibold text-white text-outlined seed-finder-glow">选择地图</h2>
         </div>
 
         <div className={`desktop-map-cards-container${hasClicked && clickedCard ? ' card-clicked' : ''}`}>

@@ -17,7 +17,7 @@ export const MAP_TYPES = [
   },
   {
     key: 'noklateo',
-    title: '诺克拉特奥',
+    title: '隐城',
     cardImage: pagesWebpUrl('/Images/mapTypes/noklateoIcon.webp')
   },
   {
