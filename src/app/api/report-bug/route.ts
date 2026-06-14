@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabaseClient"
 import { checkRateLimit } from "@/lib/rateLimit"
 
+export const dynamic = 'force-static'
+
+export async function GET() {
+  return NextResponse.json(
+    { status: 'ok', message: 'Bug report endpoint - POST only in production' },
+    { status: 200 }
+  )
+}
+
 function toClientIp(req: NextRequest): string | null {
   const forwardedFor = req.headers.get("x-forwarded-for")
   const realIp = req.headers.get("x-real-ip")

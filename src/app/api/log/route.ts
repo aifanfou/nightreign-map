@@ -3,6 +3,15 @@ import { supabase } from '@/lib/supabaseClient';
 import { checkRateLimit } from '@/lib/rateLimit';
 import seedData from '../../../../public/data/seed_data.json';
 
+export const dynamic = 'force-static';
+
+export async function GET() {
+  return NextResponse.json(
+    { status: 'ok', message: 'Log endpoint - POST only in production' },
+    { status: 200 }
+  );
+}
+
 type SeedRecord = {
   seed_id: string;
 }
