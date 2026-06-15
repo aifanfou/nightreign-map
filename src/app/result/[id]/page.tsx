@@ -2,8 +2,6 @@ import ClientMapResult from '../../../components/ClientMapResult'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import seedData from '../../../../public/data/seed_data.json'
-import { MapTypeTextBlock } from '@/components/map/MapTypeTextBlock'
-import { eventExtraText, nightlordExtraText } from '@/lib/content/seedExtraText'
 import type { Seed } from '@/lib/types'
 import type { MapTypeKey } from '@/lib/map/mapTypeText'
 
@@ -94,35 +92,21 @@ export default async function ResultPage({ params }: ResultPageProps) {
   const mapTypeKey = mapTypeLabelToKey(mapType)
   const seed = seeds.find((candidate) => candidate.seed_id === canonicalSeedId) ?? null
 
-  const nightlordKey = seed?.nightlord?.trim() ?? ''
-  const eventKey = seed?.Event?.trim() ?? ''
-
-  const nightlordText = nightlordKey.length > 0 ? nightlordExtraText[nightlordKey] : undefined
-  const eventText = eventKey.length > 0 ? eventExtraText[eventKey] : undefined
-
-  const additionalSections = [
-    nightlordText ? { title: 'Nightlord', text: nightlordText } : null,
-    eventText ? { title: 'Event', text: eventText } : null,
-  ].filter((section): section is { title: string; text: string } => section !== null)
-
   return (
-    <>
-      {mapTypeKey ? <MapTypeTextBlock mapType={mapTypeKey} additionalSections={additionalSections} /> : null}
-      <div 
-        style={{ 
-          position: 'fixed',
-          top: '65px', 
-          bottom: '45px', 
-          left: '0',
-          right: '0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-        <ClientMapResult seedNumber={canonicalSeedId} />
-      </div>
-    </>
+    <div 
+      style={{ 
+        position: 'fixed',
+        top: '45px', 
+        bottom: '30px', 
+        left: '0',
+        right: '0',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden'
+      }}
+    >
+      <ClientMapResult seedNumber={canonicalSeedId} />
+    </div>
   )
 }
