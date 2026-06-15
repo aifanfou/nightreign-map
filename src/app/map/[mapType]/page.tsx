@@ -1,7 +1,5 @@
 import ClientMapBuilder from '../../../components/ClientMapBuilder'
 import { redirect } from 'next/navigation'
-import { MapTypeTextBlock } from '@/components/map/MapTypeTextBlock'
-import type { MapTypeKey } from '@/lib/map/mapTypeText'
 import { getMapTypeText } from '@/lib/map/mapTypeText'
 import type { Metadata } from 'next'
 
@@ -25,7 +23,7 @@ export async function generateMetadata({ params }: MapPageProps): Promise<Metada
   }
 
   const mapType = mapTypeParam as ValidMapType
-  const mapTitle = getMapTypeText(mapType as MapTypeKey).title
+  const mapTitle = getMapTypeText(mapType).title
 
   return {
     title: `${mapTitle} Map`,
@@ -49,23 +47,20 @@ export default async function MapPage({ params }: MapPageProps) {
   const mapType = mapTypeParam as ValidMapType
 
   return (
-    <>
-      <MapTypeTextBlock mapType={mapType as MapTypeKey} />
-      <div 
-        style={{ 
-          position: 'fixed',
-          top: '75px',
-          bottom: '40px', 
-          left: '0',
-          right: '0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden'
-        }}
-      >
-          <ClientMapBuilder mapType={mapType} />
-      </div>
-    </>
+    <div 
+      style={{ 
+        position: 'fixed',
+        top: '45px',
+        bottom: '30px', 
+        left: '0',
+        right: '0',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden'
+      }}
+    >
+        <ClientMapBuilder mapType={mapType} />
+    </div>
   )
 }

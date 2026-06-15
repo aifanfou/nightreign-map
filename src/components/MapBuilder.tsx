@@ -1271,8 +1271,8 @@ export default function MapBuilder({ mapType = 'normal' }: MapBuilderProps) {
           ref={mapRef} 
           className="overflow-hidden"
           style={{ 
-            height: 'calc(100vh - 100px)',
-            width: 'min(100vw, calc(100vh - 100px))',
+            height: 'calc(100vh - 60px)',
+            width: 'min(100vw, calc(100vh - 60px))',
             aspectRatio: '1',
             touchAction: 'none',
             background: 'transparent'
